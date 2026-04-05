@@ -1,0 +1,16 @@
+# Ambiente Conda per Cholesky sparse cross-platform (Windows + Linux)
+# Installa con: conda env create -f environment.yml
+# Attiva con: conda activate mcs-sparse
+
+name: mcs-sparse
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy>=1.26
+  - scipy>=1.11
+  - scikit-sparse>=0.4.9  # CHOLMOD precompilato per Windows e Linux
+  - pip
+  - pip:
+    - matplotlib  # se serve per plot

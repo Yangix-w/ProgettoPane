@@ -18,3 +18,15 @@ parabolic_fem.mtx
 parabolic_fem_b.mtx
 shallow_water1.mtx
 StocF-1465.mtx
+
+# Python
+__pycache__/
+.venv/
+venv/
+*.conda
+*.tar.bz2
+*.mtx
+
+.vscode/
+
+#
