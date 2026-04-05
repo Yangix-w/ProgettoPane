@@ -1,0 +1,5 @@
+Cose da fare:
+Cholesky (non dobbiamo implementarlo), tempi, spazio, 
+errori relativo: Ax=b, b=A*xe, xe=[111111111111111...], norma2(x - xe)/norma2(xe)
+-Python: calcolo del tempo e spazio, libreria cholesky, parsing mtx, come le matrici sparse vengono memorizzate, grafici
+-MatLab: codice prof: cholesky come si usa, tiktok(tempo), chiedere per memoria, grafici
