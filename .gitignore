@@ -26,7 +26,7 @@ venv/
 *.conda
 *.tar.bz2
 *.mtx
-
+*.json
 .vscode/
 
 #

@@ -11,6 +11,7 @@ dependencies:
   - numpy>=1.26
   - scipy>=1.11
   - scikit-sparse>=0.4.9  # CHOLMOD precompilato per Windows e Linux
+  - psutil>=5.9
   - pip
   - pip:
     - matplotlib  # se serve per plot
