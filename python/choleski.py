@@ -1,11 +1,14 @@
 import os
 import sys
+import gc
 
 from scipy.io import mmread
-from scipy.sparse import csc_matrix, coo_matrix
+from scipy.sparse import csc_matrix
 from sksparse.cholmod import cholesky
 import numpy as np
+import matplotlib.pyplot as plt
 import psutil
+import time
 
 # STEP 0 (Fix per Windows): aggiungi DLL di SuiteSparse al PATH
 if sys.platform == 'win32' and 'conda' in sys.executable.lower():
@@ -15,65 +18,104 @@ if sys.platform == 'win32' and 'conda' in sys.executable.lower():
         os.environ["PATH"] = dll_dir + os.pathsep + os.environ.get("PATH", "")
         os.add_dll_directory(dll_dir)
 
-# STEP 1: Lettura da file MTX
-# TODO: inserire matrici da risolvere
-#MTX_FILE = "matrice_100.mtx"  # MATRICE DI PROVA
-MTX_FILE = "../matrices/ex15.mtx"  # MATRICE REALE (da testare)
-#MTX_FILE = "../matrices/StocF-1465.mtx" 
-results = {}
-process = psutil.Process(os.getpid())
+def get_mem_mb():
+    """Memoria RSS del processo in MB, dopo aver liberato memoria inutilizzata."""
+    gc.collect()
+    return psutil.Process(os.getpid()).memory_info().rss / (1024**2)
 
-results['matrix'] = MTX_FILE
+def check_symmetry_sparse(A, tol=1e-10):
+    diff = A - A.T
+    return diff.nnz == 0 or np.allclose(diff.data, 0, atol=tol)
 
-if os.path.exists(MTX_FILE):
-    A = mmread(MTX_FILE)
-    A = csc_matrix(A)  # Converti in CSC per Cholesky
-    print(f"Matrice caricata: {A.shape}, {A.nnz} elementi non-zero")
-    results['shape'] = A.shape
-    results['nnz'] = A.nnz
+def plot_results(results, metric, label, subplot_pos):
+    plt.subplot(1, 3, subplot_pos)
+    if metric != 're':
+        plt.plot([r['shape'][0] for r in results], [float(r[metric].split()[0]) for r in results], marker='o')
+    else:
+        plt.plot([r['shape'][0] for r in results], [float(r[metric]) for r in results], marker='o')
+    plt.yscale('log')
+    plt.ylabel(label)
+    plt.xlabel('Dimensione matrice')
+    plt.title(f'{label}')
+    plt.grid(True, alpha=0.3)
+    plt.ticklabel_format(style='plain', axis='x')
+    plt.xticks(rotation=45)
     
-    # Crea vettore b
-    n = A.shape[0]
-    xe = np.ones(n)
-    b = A @ xe 
-else:
-    print("No matrix file found. Please provide a .mtx file or modify the code to generate a matrix.")
 
-mem_after_load = process.memory_info().rss / (1024**2)  # MB
+def solve_matrix(mtx_file):
+    results = {'matrix': mtx_file}
 
-# STEP 2: Verifica simmetria
-print("\nVerifica proprietà matrice...")
-if A.shape[0] <= 1000:  # Solo per matrici non troppo grandi
-    if not np.allclose(A.toarray(), A.toarray().T):
-        print("  - ATTENZIONE: Matrice NON simmetrica (Cholesky richiede simmetria)")
+    # STEP 1: Lettura da file MTX
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    mtx_path = os.path.join(BASE_DIR, mtx_file)
+    if os.path.exists(mtx_path):
+        A = csc_matrix(mmread(mtx_path))
+        n = A.shape[0]
+        xe = np.ones(n)
+        b = A @ xe 
 
-# STEP 3: Decomposizione di Cholesky + risoluzione sistema A*x = b
-# TODO: inserire calcolo spazio e errore relativo
-print("Decomposizione di Cholesky sparse...")
+        print(f"Matrice: {mtx_file} - {A.shape}")
+        results['shape'] = A.shape
+        results['nnz'] = A.nnz
+    else:
+        print("No matrix file found. Please provide a .mtx file or modify the code to generate a matrix.")
+        return results
 
-try:
-    import time
-    t0 = time.time()
-    factor = cholesky(A)
-    x = factor(b)
+    # STEP 2: Verifica simmetria
+    if not check_symmetry_sparse(A):
+        print(" Errore: matrice NON simmetrica")
+        results['error'] = 'non simmetrica'
+        return results
 
-    t_solve = (time.time() - t0) * 1000
-    relative_error = np.linalg.norm(x - xe) / np.linalg.norm(xe)
-    mem_after_solve = process.memory_info().rss / (1024**2)
+    # STEP 3: Decomposizione di Cholesky + risoluzione sistema A*x = b
+    print("Inizio decomposizione di Cholesky")
 
-    delta_mem = mem_after_solve - mem_after_load
-    results['memory_increase_MB'] = f"{delta_mem:.2f} MB"
+    try:
+        mem_before = get_mem_mb()
+        t0 = time.perf_counter()
+        factor = cholesky(A)
+        x = factor(b)
 
-    results['time'] = f"{t_solve:.2f} ms"
-    results['relative_error'] = f"{relative_error:.2e}"
-    
-    print(results)
-    
-except Exception as e:
-    print(f"\nERRORE durante Cholesky: {e}")
-    print("\nPossibili cause:")
-    print("  - Matrice non simmetrica")
-    print("  - Matrice non definita positiva")
-    print("  - Matrice singolare")
-    import traceback
-    traceback.print_exc()
+        time_ms = (time.perf_counter() - t0) * 1000
+        relative_error = np.linalg.norm(x - xe) / np.linalg.norm(xe)
+        mem_after = get_mem_mb()
+
+        delta_mem = mem_after - mem_before
+        results['memory_increase_MB'] = f"{delta_mem:.2f} MB"
+
+        results['time'] = f"{time_ms:.2f} ms"
+        results['relative_error'] = f"{relative_error:.2e}"
+        
+        return results
+
+        
+    except Exception as e:
+        print(f"    ERRORE: {e}")
+        results['error'] = str(e)
+
+matrix_files = [
+    "../matrices/ex15.mtx",
+    "../matrices/cfd1.mtx",
+    "../matrices/shallow_water1.mtx",
+    "../matrices/cfd2.mtx",
+    "../matrices/parabolic_fem.mtx",
+    "../matrices/apache2.mtx",
+    "../matrices/G3_circuit.mtx",
+    #"../matrices/StocF-1465.mtx",
+    #"../matrices/Flan_1565.mtx"
+]
+
+toPlot = []
+
+for f in matrix_files:
+    result = solve_matrix(f)
+    print(result)
+    toPlot.append({'shape': result['shape'], 'time': result['time'], 're': result['relative_error'], 'mem_mb': result['memory_increase_MB']})
+
+plt.figure(figsize=(15, 5))
+plot_results(toPlot, 'time', 'Tempo (ms)', 1)
+plot_results(toPlot, 're', 'Errore Relativo', 2)
+plot_results(toPlot, 'mem_mb', 'Aumento Memoria (MB)', 3)
+plt.suptitle('Decomposizione di Cholesky - Risultati', fontsize=14)
+plt.tight_layout()
+plt.show()
