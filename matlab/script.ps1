@@ -19,5 +19,5 @@ foreach ($u in $urls) {
     $out = Join-Path $dest $file
 
     Write-Host "Scarico $file..."
-    Invoke-WebRequest -Uri $u -OutFile $out
+    curl.exe -L -o $out $u
 }
