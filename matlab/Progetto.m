@@ -117,7 +117,6 @@ loglog(N_vals_sorted, tempi_sorted, '-o', 'LineWidth', 2, 'MarkerFaceColor', 'b'
 title('Tempo di Risoluzione');
 xlabel('Dimensione matrice (N)');
 ylabel('Tempo (secondi)');
-%grid on;
 
 % Grafico 2: Errore Relativo
 subplot(1, 3, 2);
@@ -125,7 +124,6 @@ loglog(N_vals_sorted, errori_sorted, '-s', 'LineWidth', 2, 'MarkerFaceColor', 'r
 title('Errore Relativo');
 xlabel('Dimensione matrice (N)');
 ylabel('Errore relativo');
-%grid on;
 
 % Grafico 3: Memoria
 subplot(1, 3, 3);
@@ -133,4 +131,3 @@ loglog(N_vals_sorted, memorie_sorted, '-^', 'LineWidth', 2, 'MarkerFaceColor', '
 title('Incremento di Memoria RAM');
 xlabel('Dimensione matrice (N)');
 ylabel('Memoria (MB)');
-%grid on;
