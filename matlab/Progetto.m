@@ -6,12 +6,12 @@
 clear; clc; close all;
 
 % Elenco delle matrici
-%matrici_names = {'Flan_1565.mat', 'StocF-1465.mat', 'cfd2.mat', 'cfd1.mat', ...
-%                 'G3_circuit.mat', 'parabolic_fem.mat', 'apache2.mat', ...
-%                 'shallow_water1.mat', 'ex15.mat'};
+matrici_names = {'cfd2.mat', 'cfd1.mat', ...
+                 'G3_circuit.mat', 'parabolic_fem.mat', 'apache2.mat', ...
+                 'shallow_water1.mat', 'ex15.mat'};
 
 % Elenco delle matrici
-matrici_names = {'apache2.mat', 'shallow_water1.mat', 'ex15.mat'};
+%matrici_names = {'apache2.mat', 'shallow_water1.mat', 'ex15.mat'};
 
 num_matrici = length(matrici_names);
 
