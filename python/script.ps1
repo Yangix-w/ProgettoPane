@@ -26,7 +26,7 @@ foreach ($url in $urls) {
 
   # Estrazione
   Write-Host "Estraggo $fileName..."
-  tar -xzf $filePath -C $dest
+  tar -xzf $filePath -C $dest --strip-components=1
 
   # Eliminazione archivio
   Remove-Item $filePath
