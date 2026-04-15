@@ -11,7 +11,9 @@ matrici_names = {'cfd2.mat', 'cfd1.mat', ...
                  'shallow_water1.mat', 'ex15.mat'};
 
 % Elenco delle matrici
-%matrici_names = {'apache2.mat', 'shallow_water1.mat', 'ex15.mat'};
+%matrici_names = {'StocF-1465', cfd2.mat', 'cfd1.mat', ...
+%                 'G3_circuit.mat', 'parabolic_fem.mat', 'apache2.mat', ...
+%                 'shallow_water1.mat', 'ex15.mat'};
 
 num_matrici = length(matrici_names);
 
