@@ -6,7 +6,7 @@
 clear; clc; close all;
 
 % Elenco delle matrici
-matrici_names = {%'Flan_1565.mat', ...
+matrici_names = {'Flan_1565.mat', ...
                  'StocF-1465.mat', ...
                  'cfd2.mat', ...
                  'cfd1.mat', ...
@@ -24,7 +24,7 @@ tempi = zeros(num_matrici, 1);
 errori = zeros(num_matrici, 1);
 memorie = zeros(num_matrici, 1);
 
-fprintf('Inizio analisi di tutte le matrici...\n');
+fprintf('Inizio decomposizione di Cholesky per tutte le matrici...\n');
 fprintf('--------------------------------------------------\n');
 
 for i = 1:num_matrici
