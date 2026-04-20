@@ -11,6 +11,9 @@ Implementazione in Python con libreria scikit-sparse (CHOLMOD)
 ```bash
 # Installa Miniconda da: https://docs.conda.io/en/latest/miniconda.html
 
+# inizializza conda
+conda init powershell
+
 # Crea ambiente
 conda env create -f environment.yml
 

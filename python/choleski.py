@@ -106,8 +106,23 @@ matrix_files = [
 ]
 
 toPlot = []
+matrix_ordered = []
+shapes = {}
 
 for f in matrix_files:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    mtx_path = os.path.join(BASE_DIR, f)
+    if os.path.exists(mtx_path):
+        A = csc_matrix(mmread(mtx_path))
+        shapes[f] = A.shape
+    else:
+        print(f"File {f} non trovato.")
+        shapes[f] = (0, 0)
+
+matrix_ordered = sorted(matrix_files, key=lambda x: shapes[x][0])
+
+
+for f in matrix_ordered:
     result = solve_matrix(f)
     print(result)
     toPlot.append({'shape': result['shape'], 'time': result['time'], 're': result['relative_error'], 'mem_mb': result['memory_increase_MB']})
