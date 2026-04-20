@@ -135,3 +135,19 @@ title('Incremento di Memoria RAM');
 xlabel('Dimensione matrice (N)');
 ylabel('Memoria (MB)');
 grid on;
+
+% --- SALVATAGGIO DATI IN CSV ---
+
+% Riordiniamo e filtriamo anche i nomi delle matrici per farli combaciare
+nomi_sorted = matrici_names(idx); % Riordina usando gli indici del sort
+nomi_sorted = strrep(nomi_sorted(valid_idx)', '.mat', ''); % Filtra i validi e traspone in colonna
+
+% Creazione della tabella riassuntiva
+risultati_tabella = table(nomi_sorted, N_vals_sorted, tempi_sorted, errori_sorted, memorie_sorted, ...
+    'VariableNames', {'Matrice', 'Dimensione (N)', 'Tempo (s)', 'Errore relativo', 'Memoria (MB)'});
+
+% Scrittura su file
+nome_file_csv = 'risultati.csv';
+writetable(risultati_tabella, nome_file_csv);
+
+fprintf('\nI risultati sono stati salvati con successo nel file: %s\n', nome_file_csv);
