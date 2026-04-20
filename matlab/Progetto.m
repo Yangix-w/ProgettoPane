@@ -6,7 +6,7 @@
 clear; clc; close all;
 
 % Elenco delle matrici
-matrici_names = {%'Flan_1565.mat', ...
+matrici_names = {'Flan_1565.mat', ...
                  'StocF-1465.mat', ...
                  'cfd2.mat', ...
                  'cfd1.mat', ...
@@ -145,7 +145,12 @@ risultati_tabella = table(nomi_sorted, N_vals_sorted, tempi_sorted, errori_sorte
     'VariableNames', {'Matrice', 'Dimensione (N)', 'Tempo (s)', 'Errore relativo', 'Memoria (MB)'});
 
 % Scrittura su file
-nome_file_csv = 'risultati.csv';
-writetable(risultati_tabella, nome_file_csv);
+if ispc
+    nome_file_csv = 'risultati_windows.csv';
+    writetable(risultati_tabella, nome_file_csv);
+else
+    nome_file_csv = 'risultati_linux.csv';
+    writetable(risultati_tabella, nome_file_csv);
+end
 
 fprintf('\nI risultati sono stati salvati con successo nel file: %s\n', nome_file_csv);
