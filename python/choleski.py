@@ -94,15 +94,15 @@ def solve_matrix(mtx_file):
         results['error'] = str(e)
 
 matrix_files = [
-    "../matrices/ex15.mtx",
-    "../matrices/cfd1.mtx",
-    "../matrices/shallow_water1.mtx",
-    "../matrices/cfd2.mtx",
-    "../matrices/parabolic_fem.mtx",
-    "../matrices/apache2.mtx",
-    "../matrices/G3_circuit.mtx",
-    #"../matrices/StocF-1465.mtx",
-    #"../matrices/Flan_1565.mtx"
+    "./matrices/ex15.mtx",
+    "./matrices/cfd1.mtx",
+    "./matrices/shallow_water1.mtx",
+    "./matrices/cfd2.mtx",
+    "./matrices/parabolic_fem.mtx",
+    "./matrices/apache2.mtx",
+    "./matrices/G3_circuit.mtx",
+    "./matrices/StocF-1465.mtx",
+    "./matrices/Flan_1565.mtx"
 ]
 
 toPlot = []
