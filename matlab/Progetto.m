@@ -6,14 +6,15 @@
 clear; clc; close all;
 
 % Elenco delle matrici
-matrici_names = {'cfd2.mat', 'cfd1.mat', ...
-                 'G3_circuit.mat', 'parabolic_fem.mat', 'apache2.mat', ...
-                 'shallow_water1.mat', 'ex15.mat'};
-
-% Elenco delle matrici
-%matrici_names = {'StocF-1465', cfd2.mat', 'cfd1.mat', ...
-%                 'G3_circuit.mat', 'parabolic_fem.mat', 'apache2.mat', ...
-%                 'shallow_water1.mat', 'ex15.mat'};
+matrici_names = {%'Flan_1565.mat', ...
+                 'StocF-1465.mat', ...
+                 'cfd2.mat', ...
+                 'cfd1.mat', ...
+                 'G3_circuit.mat', ...
+                 'parabolic_fem.mat', ...
+                 'apache2.mat', ...
+                 'shallow_water1.mat', ...
+                 'ex15.mat'};
 
 num_matrici = length(matrici_names);
 
@@ -28,7 +29,8 @@ fprintf('--------------------------------------------------\n');
 
 for i = 1:num_matrici
     nome_file = fullfile('matrices', matrici_names{i});
-    
+    fprintf("Matrice: %-15s | ", strrep(matrici_names{i}, '.mat', ''));
+
     % Controlla se il file esiste
     if ~isfile(nome_file)
         warning('File %s non trovato. Salto la matrice.', nome_file);
@@ -46,6 +48,7 @@ for i = 1:num_matrici
     
     N = size(A, 1);
     N_vals(i) = N;
+    fprintf("N: %-8d | ", N);
     
     % Creazione del vettore soluzione esatta e termine noto
     xe = ones(N, 1);
@@ -87,8 +90,8 @@ for i = 1:num_matrici
     errori(i) = norm(x - xe, 2) / norm(xe, 2);
     
     % Stampa dei risultati intermedi
-    fprintf('Matrice: %-15s | N: %-8d | Tempo: %8.4f s | Errore: %8.2e | Memoria: %8.2f MB\n', ...
-            strrep(matrici_names{i}, '.mat', ''), N, tempi(i), errori(i), memorie(i));
+    fprintf('Tempo: %8.4f s | Errore: %8.2e | Memoria: %8.2f MB\n', ...
+            tempi(i), errori(i), memorie(i));
             
     % Pulizia per liberare la RAM prima del ciclo successivo
     clear A b x xe data;
