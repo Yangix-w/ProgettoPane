@@ -61,9 +61,7 @@ for i = 1:num_matrici
         mem_start = mem_info_start.MemUsedMATLAB / (1024^2); % MB
     else
         % Linux
-        pid = feature('getpid');
-        [~, cmd_out] = system(sprintf('ps -o rss= -p %d', pid));
-        mem_start = str2double(cmd_out) / 1024; % Conversione da KB a MB
+        mem_start = mem_info();
     end
     
     % --- RISOLUZIONE E MISURAZIONE TEMPO ---
@@ -78,9 +76,7 @@ for i = 1:num_matrici
         mem_end = mem_info_end.MemUsedMATLAB / (1024^2); % MB
     else
         % Linux
-        pid = feature('getpid');
-        [~, cmd_out] = system(sprintf('ps -o rss= -p %d', pid));
-        mem_end = str2double(cmd_out) / 1024;
+        mem_end = mem_info();
     end
     
     % Incremento di memoria
