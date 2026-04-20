@@ -137,8 +137,6 @@ ylabel('Memoria (MB)');
 grid on;
 
 % --- SALVATAGGIO DATI IN CSV ---
-
-% Riordiniamo e filtriamo anche i nomi delle matrici per farli combaciare
 nomi_sorted = matrici_names(idx); % Riordina usando gli indici del sort
 nomi_sorted = strrep(nomi_sorted(valid_idx)', '.mat', ''); % Filtra i validi e traspone in colonna
 
