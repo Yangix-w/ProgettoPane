@@ -147,10 +147,10 @@ risultati_tabella = table(nomi_sorted, N_vals_sorted, tempi_sorted, errori_sorte
 % Scrittura su file
 if ispc
     nome_file_csv = 'risultati_windows.csv';
-    writetable(risultati_tabella, nome_file_csv);
 else
     nome_file_csv = 'risultati_linux.csv';
-    writetable(risultati_tabella, nome_file_csv);
 end
+
+writetable(risultati_tabella, nome_file_csv);
 
 fprintf('\nI risultati sono stati salvati con successo nel file: %s\n', nome_file_csv);
