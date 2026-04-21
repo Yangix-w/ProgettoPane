@@ -6,8 +6,8 @@
 clear; clc; close all;
 
 % Elenco delle matrici
-matrici_names = {'Flan_1565.mat', ...
-                 'StocF-1465.mat', ...
+matrici_names = {%'Flan_1565.mat', ...
+                 %'StocF-1465.mat', ...
                  'cfd2.mat', ...
                  'cfd1.mat', ...
                  'G3_circuit.mat', ...
@@ -55,32 +55,40 @@ for i = 1:num_matrici
     b = A * xe;
     
     % --- MISURAZIONE MEMORIA INIZIALE ---
-    if ispc 
+    %if ispc 
         % Windows
-        mem_info_start = memory;
-        mem_start = mem_info_start.MemUsedMATLAB / (1024^2); % MB
-    else
+    %    mem_info_start = memory;
+    %    mem_start = mem_info_start.MemUsedMATLAB / (1024^2); % MB
+    %else
         % Linux
-        mem_start = mem_info();
-    end
+    %    mem_start = mem_info();
+    %end
+
+    profile clear % Pulisce eventuali dati precedenti
+    profile on -memory
     
     % --- RISOLUZIONE E MISURAZIONE TEMPO ---
     tic;
     x = A \ b; 
     tempi(i) = toc;
+
+    profile off
+    stats = profile('info'); % Estrae tutte le statistiche registrate
     
     % --- MISURAZIONE MEMORIA FINALE ---
-    if ispc
-        % Windows
-        mem_info_end = memory;
-        mem_end = mem_info_end.MemUsedMATLAB / (1024^2); % MB
-    else
+    %if ispc
+    %    % Windows
+    %    mem_info_end = memory;
+    %    mem_end = mem_info_end.MemUsedMATLAB / (1024^2); % MB
+    %else
         % Linux
-        mem_end = mem_info();
-    end
+    %    mem_end = mem_info();
+    %end
     
     % Incremento di memoria
-    memorie(i) = max(0, mem_end - mem_start); 
+    %memorie(i) = max(0, mem_end - mem_start);
+    memoria_allocata_b = stats.FunctionTable(1).TotalMemAllocated;
+    memorie(i) = memoria_allocata_b / 1024^2;
     
     % --- CALCOLO ERRORE RELATIVO ---
     errori(i) = norm(x - xe, 2) / norm(xe, 2);
