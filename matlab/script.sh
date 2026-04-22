@@ -1,0 +1,29 @@
+#!/bin/bash
+
+urls=(
+  "https://suitesparse-collection-website.herokuapp.com/mat/Janna/Flan_1565.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/Janna/StocF-1465.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/Rothberg/cfd2.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/Rothberg/cfd1.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/AMD/G3_circuit.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/Wissgott/parabolic_fem.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/GHS_psdef/apache2.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/MaxPlanck/shallow_water1.mat"
+    "https://suitesparse-collection-website.herokuapp.com/mat/FIDAP/ex15.mat"
+)
+
+dest="./matrices"
+
+# Crea la cartella (senza errore se esiste)
+mkdir -p "$dest"
+
+for url in "${urls[@]}"; do
+  file=$(basename "$url")
+  path="$dest/$file"
+
+  echo "Scarico $file..."
+
+  # Download
+  curl -L -o "$path" "$url"
+  echo
+done
