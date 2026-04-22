@@ -53,18 +53,8 @@ for i = 1:num_matrici
     % Creazione del vettore soluzione esatta e termine noto
     xe = ones(N, 1);
     b = A * xe;
-    
-    % --- MISURAZIONE MEMORIA INIZIALE ---
-    %if ispc 
-        % Windows
-    %    mem_info_start = memory;
-    %    mem_start = mem_info_start.MemUsedMATLAB / (1024^2); % MB
-    %else
-        % Linux
-    %    mem_start = mem_info();
-    %end
 
-    profile clear % Pulisce eventuali dati precedenti
+    profile clear % Pulizia eventuali dati precedenti
     profile on -memory
     
     % --- RISOLUZIONE E MISURAZIONE TEMPO ---
@@ -73,20 +63,9 @@ for i = 1:num_matrici
     tempi(i) = toc;
 
     profile off
-    stats = profile('info'); % Estrae tutte le statistiche registrate
-    
-    % --- MISURAZIONE MEMORIA FINALE ---
-    %if ispc
-    %    % Windows
-    %    mem_info_end = memory;
-    %    mem_end = mem_info_end.MemUsedMATLAB / (1024^2); % MB
-    %else
-        % Linux
-    %    mem_end = mem_info();
-    %end
+    stats = profile('info'); % Estrazione di tutte le statistiche registrate
     
     % Incremento di memoria
-    %memorie(i) = max(0, mem_end - mem_start);
     memoria_allocata_b = stats.FunctionTable(1).TotalMemAllocated;
     memorie(i) = memoria_allocata_b / 1024^2;
     
