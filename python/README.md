@@ -4,46 +4,44 @@
 Algoritmi numerici per matrici sparse molto grandi con decomposizione di Cholesky.
 Implementazione in Python con libreria scikit-sparse (CHOLMOD)
 
-### Setup (Windows + Linux)
+### Setup con Conda (Windows + Linux)
 
-### Metodo 1: Conda (RACCOMANDATO - funziona su Windows e Linux)
+**Perché Conda?** Fornisce scikit-sparse precompilato con tutte le librerie C++ necessarie (CHOLMOD/SuiteSparse), evitando compilazioni complesse.
 
-```bash
-# Installa Miniconda da: https://docs.conda.io/en/latest/miniconda.html
+Installa Miniconda da: https://docs.conda.io/en/latest/miniconda.html
 
-# inizializza conda
+**Windows:**
+```powershell
+
+# Inizializza conda
 conda init powershell
 
-# Crea ambiente
+# Crea ambiente dalla cartella python/
 conda env create -f environment.yml
 
 # Attiva ambiente
 conda activate mcs-sparse
 
-# Verifica installazione
-python -c "from sksparse.cholmod import cholesky; print('✓ scikit-sparse OK')"
-
 # Avvio script
 python choleski.py
 ```
 
-### Metodo 2: Solo Linux/WSL
-
+**Linux:**
 ```bash
-# Installa dipendenze di sistema
-sudo apt-get install libsuitesparse-dev
 
-# Installa pacchetti Python
-pip install numpy scipy scikit-sparse
-```
+# Crea ambiente dalla cartella python/
+conda env create -f environment.yml
 
-### Metodo 3: Windows con WSL
+# Inizializza conda
+conda init
 
-```powershell
-# Installa WSL2
-wsl --install
+# Chiudi e riapri il terminale
 
-# Segui poi il Metodo 2 dentro WSL
+# Attiva ambiente
+conda activate mcs-sparse
+
+# Avvio script
+python choleski.py
 ```
 
 ## Librerie Python utilizzate
