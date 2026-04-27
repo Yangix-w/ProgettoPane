@@ -45,13 +45,26 @@ for i = 1:num_matrici
         campi = fieldnames(data);
         A = data.(campi{1}); 
     end
+    
+    %N = size(A, 1);
+    %N_vals(i) = N;
+    %fprintf("N: %-8d | ", N);
+    
+    % Creazione del vettore soluzione esatta e termine noto
+    %xe = ones(N, 1);
+    %b = A * xe;
 
     profile clear % Pulizia eventuali dati precedenti
-    profile on -memory
+    profile -memory on
 
     N = size(A, 1);
 
-    [x, xe] = solve(A, N);
+    [x, tempi(i), N_vals(i), xe] = solve_and_measure(A, N);
+    
+    % --- RISOLUZIONE E MISURAZIONE TEMPO ---
+    %tic;
+    %x = A \ b; 
+    %tempi(i) = toc;
 
     profile off
     stats = profile('info'); % Estrazione di tutte le statistiche registrate
@@ -59,9 +72,7 @@ for i = 1:num_matrici
     % Incremento di memoria
     memoria_allocata_b = stats.FunctionTable(2).TotalMemAllocated;
     memorie(i) = memoria_allocata_b / 1024^2;
-    tempi(i) = stats.FunctionTable(2).TotalTime;
-    
-    N_vals(i) = N; 
+
     fprintf("N: %-8d | ", N_vals(i));
     
     % --- CALCOLO ERRORE RELATIVO ---
