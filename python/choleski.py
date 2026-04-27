@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import psutil
 import time
 import csv
+import platform
 
 # STEP 0 (Fix per Windows): aggiungi DLL di SuiteSparse al PATH
 if sys.platform == 'win32' and 'conda' in sys.executable.lower():
@@ -101,8 +102,8 @@ matrix_files = [
     "./matrices/parabolic_fem.mtx",
     "./matrices/apache2.mtx",
     "./matrices/G3_circuit.mtx",
-    "./matrices/StocF-1465.mtx",
-    "./matrices/Flan_1565.mtx"
+    #"./matrices/StocF-1465.mtx",
+    #"./matrices/Flan_1565.mtx"
 ]
 
 toPlot = []
@@ -121,7 +122,13 @@ for f in matrix_files:
 
 matrix_ordered = sorted(matrix_files, key=lambda x: shapes[x][0])
 
-csv_file = os.path.join(BASE_DIR, 'choleski_results_python.csv')
+os_name = platform.system()
+if os_name == 'Windows':
+    csv_file = os.path.join(BASE_DIR, 'results_python_windows.csv')
+else:
+    csv_file = os.path.join(BASE_DIR, 'results_python_linux.csv')
+
+
 
 for f in matrix_ordered:
     result = solve_matrix(f)
