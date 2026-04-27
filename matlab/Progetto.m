@@ -128,11 +128,17 @@ risultati_tabella = table(nomi_sorted, N_vals_sorted, tempi_sorted, errori_sorte
 
 % Scrittura su file
 if ispc
-    nome_file_csv = 'risultati_windows.csv';
+    nome_file_csv = 'risultati_matlab_windows.csv';
 else
-    nome_file_csv = 'risultati_linux.csv';
+    nome_file_csv = 'risultati_matlab_linux.csv';
 end
 
-writetable(risultati_tabella, nome_file_csv);
+% ottieni la cartella genitore della current folder
+parentFolder = fileparts(pwd);
+
+% costruisci il percorso alla sottocartella results nella cartella genitore
+folder = fullfile(parentFolder, 'results');
+
+writetable(risultati_tabella, fullfile(folder, nome_file_csv));
 
 fprintf('\nI risultati sono stati salvati con successo nel file: %s\n', nome_file_csv);

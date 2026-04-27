@@ -19,8 +19,6 @@ parabolic_fem_b.mtx
 shallow_water1.mtx
 StocF-1465.mtx
 
-risultati_windows.csv
-
 # Python
 __pycache__/
 .venv/
@@ -31,7 +29,12 @@ venv/
 *.json
 .vscode/
 
-#
-risultati_linux.csv
+#risultati temporanei
+risultati_matlab_windows.csv
+risultati_matlab_linux.csv
+risultati_python_windows.csv
+risultati_python_linux.csv
 
+
+#MATLab
 Progetto.asv
