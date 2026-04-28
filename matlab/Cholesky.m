@@ -136,8 +136,14 @@ end
 % ottieni la cartella genitore della current folder
 parentFolder = fileparts(pwd);
 
+folderName = 'results';
+
+if ~isfolder(fullfile(parentFolder, folderName))
+    mkdir(parentFolder, folderName);
+end
+
 % costruisci il percorso alla sottocartella results nella cartella genitore
-folder = fullfile(parentFolder, 'results');
+folder = fullfile(parentFolder, folderName);
 
 writetable(risultati_tabella, fullfile(folder, nome_file_csv));
 
