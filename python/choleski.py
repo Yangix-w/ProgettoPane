@@ -123,6 +123,7 @@ for f in matrix_files:
 matrix_ordered = sorted(matrix_files, key=lambda x: shapes[x][0])
 
 RESULTS_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "results"))
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
 os_name = platform.system()
 if os_name == 'Windows':
