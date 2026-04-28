@@ -78,8 +78,8 @@ def solve_matrix(mtx_file):
         x = factor(b)
 
         time_ms = (time.perf_counter() - t0)
-        relative_error = np.linalg.norm(x - xe) / np.linalg.norm(xe)
         mem_after = get_mem_mb()
+        relative_error = np.linalg.norm(x - xe) / np.linalg.norm(xe)
 
         delta_mem = mem_after - mem_before
         results['memory_increase_MB'] = f"{delta_mem:.6f}"
