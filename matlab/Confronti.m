@@ -3,7 +3,7 @@
 clear; clc; close all;
 
 % --- 1. DEFINIZIONE PERCORSI E LETTURA CSV ---
-parentFolder = pwd; % Se la cartella results è in quella corrente
+parentFolder = pwd;
 folder = fullfile(parentFolder, 'results');
 
 % Assicurati che i file Python siano stati nominati in questo modo

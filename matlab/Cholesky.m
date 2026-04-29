@@ -55,9 +55,12 @@ for i = 1:num_matrici
 
     profile off
     stats = profile('info'); % Estrazione di tutte le statistiche registrate
+
+    s = whos;
+    workspace = sum([s.bytes])/1024^2;
     
     % Incremento di memoria
-    memorie(i) = stats.FunctionTable(2).TotalMemAllocated / 1024^2;
+    memorie(i) = stats.FunctionTable(2).TotalMemAllocated/1024^2 + workspace;
     tempi(i) = stats.FunctionTable(2).TotalTime;
     
     N_vals(i) = N; 
