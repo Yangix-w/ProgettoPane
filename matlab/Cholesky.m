@@ -51,21 +51,18 @@ for i = 1:num_matrici
 
     N = size(A, 1);
 
-    [x, xe] = solve(A, N);
+    errori(i) = solve(A, N);
 
     profile off
     stats = profile('info'); % Estrazione di tutte le statistiche registrate
     
     % Incremento di memoria
-    memoria_allocata_b = stats.FunctionTable(2).TotalMemAllocated;
-    memorie(i) = memoria_allocata_b / 1024^2;
+    memorie(i) = stats.FunctionTable(2).TotalMemAllocated / 1024^2;
     tempi(i) = stats.FunctionTable(2).TotalTime;
     
     N_vals(i) = N; 
     fprintf("N: %-8d | ", N_vals(i));
     
-    % --- CALCOLO ERRORE RELATIVO ---
-    errori(i) = norm(x - xe, 2) / norm(xe, 2);
     
     % Stampa dei risultati intermedi
     fprintf('Tempo: %8.4f s | Errore: %8.2e | Memoria: %8.4f MB\n', ...
